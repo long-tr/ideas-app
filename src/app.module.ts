@@ -7,10 +7,12 @@ import { ValidationPipe } from './shared/pipes/validation.pipe';
 import { IdeaModule } from './ideas/idea.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { LoggingInterceptor } from './shared/interceptors/logging.interceptor';
+import { UserModule } from './users/user.module';
 
 @Module({
   imports: [IdeaModule,
-    MongooseModule.forRoot('mongodb+srv://storm:admin@cluster0-fydzq.mongodb.net/ideas-app?retryWrites=true&w=majority')
+    MongooseModule.forRoot('mongodb+srv://storm:admin@cluster0-fydzq.mongodb.net/ideas-app?retryWrites=true&w=majority'),
+    UserModule
   ],
   controllers: [AppController],
   providers: [AppService,
