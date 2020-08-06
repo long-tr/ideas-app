@@ -1,24 +1,33 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Idea } from './idea.schema';
+import { Model } from 'mongoose';
+import { createIdeaDto, updateIdeaDto } from './idea.dto';
 
 @Injectable()
 export class IdeaService {
-    getAllIdeas(){
-        return 'Get all ideas'
+    constructor(@InjectModel('ideas') private _ideaModel: Model<Idea> ){}
+
+    async getAllIdeas(): Promise<Idea[]>{
+        return this._ideaModel.find().exec()
     }
 
-    getIdeaById(id: string){
-        return `Get idea has id ${id}`
+    async getIdeaById(id: string): Promise<Idea>{
+        return this._ideaModel.findById(id)
     }
 
-    createIdea(idea){
-        return `Create idea`
+    async createIdea(idea: createIdeaDto): Promise<Idea>{
+        const createIdea = new this._ideaModel(idea)
+        return await createIdea.save()
     }
 
-    updateById(id: string, idea){
-        return `Update idea has id ${id}`
+    async updateById(id: string, ideaDto: updateIdeaDto): Promise<Idea>{
+        const idea = await this._ideaModel.findById(id)
+        await idea.updateOne(ideaDto)
+        return await this._ideaModel.findById(id)
     }
 
-    deleteById(id: string){
-        return `Remove idea has id ${id}`
+    async deleteById(id: string): Promise<Idea>{
+        return this._ideaModel.findByIdAndRemove(id)
     }
 }

@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { APP_FILTER, APP_PIPE } from '@nestjs/core';
+import { APP_FILTER, APP_PIPE, APP_INTERCEPTOR } from '@nestjs/core';
 import { HttpExceptionFilter } from './shared/filters/http-exception.filter';
 import { ValidationPipe } from './shared/pipes/validation.pipe';
 import { IdeaModule } from './ideas/idea.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { LoggingInterceptor } from './shared/interceptors/logging.interceptor';
 
 @Module({
   imports: [IdeaModule,
@@ -16,6 +17,10 @@ import { MongooseModule } from '@nestjs/mongoose';
   {
     provide: APP_FILTER,
     useClass: HttpExceptionFilter
+  },
+  {
+    provide: APP_INTERCEPTOR,
+    useClass: LoggingInterceptor
   },
   {
     provide: APP_PIPE,
