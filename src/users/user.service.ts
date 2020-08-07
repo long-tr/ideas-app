@@ -11,8 +11,7 @@ export class UserService {
     ){}
 
     async getAll(): Promise<User[]>{
-        const allUser = this._userModel.find().exec()
-        return allUser
+        return this._userModel.find().select('-password').exec()
     }
 
     async create(userDto: UserDto): Promise<User>{

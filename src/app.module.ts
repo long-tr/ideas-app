@@ -6,7 +6,7 @@ import { HttpExceptionFilter } from './shared/filters/http-exception.filter';
 import { ValidationPipe } from './shared/pipes/validation.pipe';
 import { IdeaModule } from './ideas/idea.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { LoggingInterceptor } from './shared/interceptors/logging.interceptor';
+import { LoggerInterceptor } from './shared/interceptors/logger.interceptor';
 import { UserModule } from './users/user.module';
 
 @Module({
@@ -22,7 +22,7 @@ import { UserModule } from './users/user.module';
   },
   {
     provide: APP_INTERCEPTOR,
-    useClass: LoggingInterceptor
+    useClass: LoggerInterceptor
   },
   {
     provide: APP_PIPE,

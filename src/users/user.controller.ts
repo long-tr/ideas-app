@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user.schema';
 import { UserDto } from './user.dto';
+import { UserDeco } from 'src/shared/decorators/user.decorator';
+import { AuthGuard } from 'src/shared/guard/auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -10,7 +12,8 @@ export class UserController {
     ){}
 
     @Get()
-    async getAllUsers(): Promise<User[]>{
+    @UseGuards(new AuthGuard())
+    async getAllUsers(@UserDeco() user): Promise<User[]>{
         return this._userService.getAll()
     }
 
